@@ -28,73 +28,84 @@
     km: { bus: 365, airport: 80, bergamo: 55 },
   };
 
-  const END = 61;
-  // Timeline seconds per real second. Lower = slower; 0.55 makes the whole story about 1 min 50 s.
+  const END = 81;
+  // Timeline seconds per real second. Lower = slower; 0.42 makes the whole story about 3 min 15 s.
   const PLAYBACK_SPEED = 0.55;
 
+  // One text on screen at a time. Each chapter starts at `t` (timeline ticks and
+  // the date stamp follow it) and shows its caption card during `cap`, next to the
+  // vehicle named in `near`. Speech bubbles get their own slots between captions.
   const VEN = 'venerdì 6 nov', SAB = 'sabato 7 nov';
   const CHAPTERS = [
-    { t: 0,    day: VEN, part: 'pomeriggio', title: 'Nizza',
-      text: 'Da sale sul bus con uno zaino e una quantità sospetta di snack. La Promenade des Anglais dovrà cavarsela senza di lui.' },
-    { t: 7,    day: VEN, part: 'pomeriggio', title: 'Monaco, a passo di bus',
+    { t: 0, cap: [2.8, 5.7], near: 'bus', day: VEN, part: 'pomeriggio', title: 'Nizza',
+      text: 'Da sale sul bus con uno zaino e una quantità sospetta di snack.' },
+    { t: 7.2, cap: [7.4, 10.4], near: 'bus', day: VEN, part: 'pomeriggio', title: 'Monaco, a passo di bus',
       text: 'Si sfila davanti agli yacht. Nessuno lo invita a bordo. Peggio per loro.' },
-    { t: 10.5, day: VEN, part: 'pomeriggio', title: 'Ventimiglia',
-      text: "Benvenuto in Italia. Fuori i croissant, dentro la focaccia. L'autista passa ai gesti con le mani." },
-    { t: 15,   day: VEN, part: 'pomeriggio', title: 'Genova',
-      text: 'Il bus saluta il mare e si arrampica sugli Appennini, un tornante alla volta. Lo stomaco di Da protesta.' },
-    { t: 18,   day: VEN, part: 'pomeriggio', title: 'Pianura Padana',
-      text: "Sosta all'Autogrill. Da legge gli ingredienti di ogni panino come un detective. Missione vegetariana compiuta: pizzetta margherita." },
-    { t: 21.5, day: VEN, part: 'tardo pomeriggio', title: 'Tangenziale di Milano',
-      text: 'Tre chilometri in quaranta minuti. Da compone una breve opera lirica sul traffico.' },
-    { t: 25.5, day: VEN, part: 'tardo pomeriggio', title: 'Mariano Comense',
-      text: 'Casa! La famiglia ha cucinato abbastanza da sfamare tutta la provincia di Como. Rigorosamente vegetariano.' },
-    { t: 28.5, day: VEN, part: 'sera', title: 'Turno serale',
-      text: 'Nuova missione: stasera Birgit atterra a Malpensa da Vienna. Il taxi di famiglia scalda il motore.' },
-    { t: 32,   day: VEN, part: 'sera', title: 'Gara verso Malpensa',
-      text: "Auto contro aereo, stessa destinazione. Nessuno ha detto all'aereo che era una gara." },
-    { t: 36.4, day: VEN, part: 'sera', title: 'Birgit è atterrata',
-      text: 'Da fa il disinvolto, come se non avesse controllato il volo da Vienna ogni quattro minuti dalla pausa pranzo.' },
-    { t: 40,   day: VEN, part: 'notte', title: 'Ritorno a Mariano',
-      text: "Viaggio tranquillo sotto le stelle. Qualcuno si addormenta sul sedile dietro. (Era Da.)" },
-    { t: 45.5, day: SAB, part: '27 anni!', title: 'Buon compleanno!',
-      text: 'Da si sveglia con 27 anni e, a quanto pare, più saggio. Nella notte gli è comparso in testa un cappellino da festa.' },
-    { t: 49.5, day: SAB, part: '27 anni!', title: 'Destinazione Bergamo',
+    { t: 10.5, cap: [10.6, 13.1], near: 'bus', day: VEN, part: 'pomeriggio', title: 'Ventimiglia',
+      text: 'Benvenuto in Italia: fuori i croissant, dentro la focaccia.' },
+    { t: 14.6, cap: [14.7, 17.6], near: 'bus', day: VEN, part: 'pomeriggio', title: 'Genova',
+      text: 'Ciao mare: il bus si arrampica sugli Appennini, un tornante alla volta.' },
+    { t: 19.1, cap: [19.2, 22.7], near: 'bus', day: VEN, part: 'pomeriggio', title: 'Pianura Padana',
+      text: "All'Autogrill Da indaga ogni panino come un detective. Verdetto vegetariano: pizzetta." },
+    { t: 22.8, cap: [22.9, 26.0], near: 'bus', day: VEN, part: 'tardo pomeriggio', title: 'Tangenziale di Milano',
+      text: "Tre chilometri in quaranta minuti. Da compone un'opera lirica sul traffico." },
+    { t: 28.8, cap: [30.4, 33.9], near: 'bus', day: VEN, part: 'tardo pomeriggio', title: 'Mariano Comense',
+      text: 'Casa! La famiglia ha cucinato per tutta la provincia di Como. Rigorosamente vegetariano.' },
+    { t: 34.2, cap: [34.3, 37.6], near: 'car', day: VEN, part: 'sera', title: 'Turno serale',
+      text: 'Stasera Birgit atterra a Malpensa da Vienna. Il taxi di famiglia scalda il motore.' },
+    { t: 39.1, cap: [39.2, 41.9], near: 'car', day: VEN, part: 'sera', title: 'Gara verso Malpensa',
+      text: "Auto contro aereo. Nessuno ha detto all'aereo che era una gara." },
+    { t: 44.3, cap: [47.3, 50.4], near: 'car', day: VEN, part: 'sera', title: 'Birgit è atterrata',
+      text: 'Da fa il disinvolto. Ha controllato il volo ogni quattro minuti da pranzo.' },
+    { t: 50.5, cap: [50.6, 53.8], near: 'car', day: VEN, part: 'notte', title: 'Ritorno a Mariano',
+      text: 'Si torna a casa sotto le stelle. Qualcuno si addormenta dietro. (Era Da.)' },
+    { t: 58.0, cap: [58.2, 61.4], near: 'car', day: SAB, part: '27 anni!', title: 'Buon compleanno!',
+      text: 'Da si sveglia con 27 anni. Nella notte gli è comparso un cappellino da festa.' },
+    { t: 64.3, cap: [64.4, 67.2], near: 'bus2', day: SAB, part: '27 anni!', title: 'Destinazione Bergamo',
       text: 'Il festeggiato e Birgit prendono il bus. Prossima fermata: Bergamo.' },
-    { t: 52.5, day: SAB, part: '27 anni!', title: 'Intanto, in Val Seriana',
+    { t: 67.3, cap: [67.4, 72.7], near: 'scooter', day: SAB, part: '27 anni!', title: 'Intanto, in Val Seriana',
       text: "Il CEO scende da Fiobbio in scooter. Lo chiama «offsite strategico», lo mette in nota spese e ha già pronta una slide sul compleanno di Da." },
-    { t: 57,   day: SAB, part: '27 anni!', title: 'Bergamo',
+    { t: 74.2, cap: [74.3, 77.7], near: 'bus2', day: SAB, part: '27 anni!', title: 'Bergamo',
       text: 'Tutti insieme per il grande giorno. Qualcuno nomina la polenta entro trenta secondi.' },
   ];
 
   // [from, to, who, text]
   const BUBBLES = [
-    [3.4, 6.4, 'da', 'Au revoir, Nizza!'],
-    [11.2, 13.6, 'da', 'Buongiorno, Italia!'],
-    [15.6, 17.4, 'da', 'Quanti tornanti…'],
-    [21.8, 24.2, 'da', 'Dai, muoviti…'],
-    [26.6, 28.2, 'da', 'Sono a casa!'],
-    [30.6, 32.8, 'family', 'Andiamo!'],
-    [36.6, 37.8, 'birgit', 'Servus!'],
-    [38.0, 39.6, 'da', 'Finalmente!'],
-    [40.8, 44.8, 'da', 'zzz…'],
-    [46.6, 48.2, 'da', 'Chi mi ha messo questo cappello?'],
-    [48.4, 49.8, 'family', 'Fate i bravi!'],
-    [52.8, 55.4, 'edo', 'Arrivo, ho una call alle tre!'],
-    [57.3, 59.0, 'edo', 'Auguri, Da!'],
-    [59.1, 61.0, 'da', 'Grazie!'],
+    [5.9, 7.1, 'da', 'Au revoir, Nizza!'],
+    [13.3, 14.5, 'da', 'Buongiorno, Italia!'],
+    [17.8, 19.0, 'da', 'Quanti tornanti…'],
+    [26.2, 27.4, 'da', 'Dai, muoviti…'],
+    [29.0, 30.2, 'da', 'Sono a casa!'],
+    [37.8, 39.0, 'family', 'Andiamo!'],
+    [44.5, 45.7, 'birgit', 'Servus!'],
+    [45.9, 47.1, 'da', 'Finalmente!'],
+    [54.0, 55.6, 'da', 'zzz…'],
+    [61.6, 63.0, 'da', 'Chi mi ha messo questo cappello?'],
+    [63.2, 64.2, 'family', 'Fate i bravi!'],
+    [72.9, 74.1, 'edo', 'Arrivo, ho una call alle tre!'],
+    [77.9, 79.1, 'edo', 'Auguri, Da!'],
+    [79.3, 80.6, 'da', 'Grazie!'],
   ];
 
   // Blobatar expressions over time: [from, pose]. Poses come from blobatar/expression.
   const MOODS = {
-    da: [[0, 'happy'], [7, 'smug'], [10.5, 'happy'], [13.6, 'idle'], [15.3, 'sick'], [18, 'thinking'],
-      [21.5, 'mad'], [25.5, 'happy'], [28.5, 'idle'], [31, 'thinking'], [34, 'surprised'], [36.6, 'love'],
-      [40.5, 'sleepy'], [45.5, 'surprised'], [46.6, 'unsure'], [48.3, 'happy'], [50.6, 'love'], [53, 'idle'],
-      [56.8, 'happy']],
-    birgit: [[0, 'idle'], [32, 'smug'], [35, 'idle'], [36.4, 'happy'], [38, 'love'], [41, 'sleepy'],
-      [46, 'happy'], [50.6, 'love'], [53, 'wink'], [54.6, 'idle'], [56.8, 'happy']],
-    family: [[0, 'happy'], [30, 'mad'], [33, 'surprised'], [36.4, 'happy'], [40, 'idle'], [46, 'love'],
-      [48.3, 'sad']],
-    edo: [[0, 'idle'], [52.5, 'smug'], [55, 'happy'], [59, 'wink']],
+    da: [[0, 'happy'], [7.4, 'smug'], [10.6, 'happy'], [14.7, 'idle'], [17.6, 'sick'], [19.2, 'thinking'],
+      [22.9, 'mad'], [28.8, 'happy'], [34.3, 'idle'], [39.2, 'thinking'], [43, 'surprised'], [44.6, 'love'],
+      [51, 'sleepy'], [58, 'surprised'], [61.5, 'unsure'], [63, 'happy'], [65.2, 'love'], [68, 'idle'],
+      [73.5, 'happy']],
+    birgit: [[0, 'idle'], [39.2, 'smug'], [43, 'idle'], [44.4, 'happy'], [46, 'love'], [51.2, 'sleepy'],
+      [58, 'happy'], [65.2, 'love'], [68, 'wink'], [70, 'idle'], [73.5, 'happy']],
+    family: [[0, 'happy'], [37.8, 'mad'], [41.5, 'surprised'], [44.4, 'happy'], [48.5, 'idle'], [58, 'love'],
+      [62.9, 'sad']],
+    edo: [[0, 'idle'], [67.4, 'smug'], [72.8, 'happy'], [79.2, 'wink']],
+  };
+
+  // Moments that are not texts or moods.
+  const T = {
+    hat: 58.4,          // party hat appears on Da
+    sleep: [51, 56],    // Da's head lolls on the night drive
+    reunion: 74.3,      // confetti in Bergamo
+    planeGone: 47,      // contrail fades out
   };
 
   // ---------------------------------------------------------------------------
@@ -244,21 +255,21 @@
   // Cast: vehicles with timed trips
   // ---------------------------------------------------------------------------
   const ACTORS = {
-    bus: { kind: 'bus', show: [2.4, 28.6], trips: [
-      { route: 'bus', keys: [[6.5, 0], [11, 'w4'], [16, 'w12'], [20.5, 'w18'], [24, 'w19'], [26.5, 1]] },
+    bus: { kind: 'bus', show: [2.4, 34.4], trips: [
+      { route: 'bus', keys: [[7.2, 0], [11.5, 'w4'], [17, 'w12'], [22.7, 'w18'], [26.4, 'w19'], [28.8, 1]] },
     ] },
-    car: { kind: 'car', show: [27.8, 49.85], trips: [
-      { route: 'malpensa', keys: [[30, 0], [35.5, 1]] },
-      { route: 'back', keys: [[39.5, 0], [45, 1]] },
+    car: { kind: 'car', show: [33.2, 64.8], trips: [
+      { route: 'malpensa', keys: [[37.8, 0], [43.3, 1]] },
+      { route: 'back', keys: [[48.5, 0], [54.5, 1]] },
     ] },
-    plane: { kind: 'plane', show: [29.5, 38.6], trips: [
-      { route: 'plane', keys: [[29.5, 0], [36.5, 1]] },
+    plane: { kind: 'plane', show: [37.3, 47], trips: [
+      { route: 'plane', keys: [[37.3, 0], [44.3, 1]] },
     ] },
-    scooter: { kind: 'scooter', show: [50.4, 99], trips: [
-      { route: 'edo', keys: [[51, 0], [57, 1]] },
+    scooter: { kind: 'scooter', show: [66.8, 999], trips: [
+      { route: 'edo', keys: [[67.4, 0], [73.5, 1]] },
     ] },
-    bus2: { kind: 'bus', show: [49.1, 99], trips: [
-      { route: 'bergamo', keys: [[50.2, 0], [57, 1]] },
+    bus2: { kind: 'bus', show: [64.1, 999], trips: [
+      { route: 'bergamo', keys: [[65, 0], [73.5, 1]] },
     ] },
   };
   for (const a of Object.values(ACTORS)) {
@@ -352,10 +363,10 @@
 
   // Who rides what: [from, to, vehicle, seat]. Gaps between rides become hops.
   const RIDES = {
-    da: [[2.4, 27.6, 'bus', 0], [28.4, 49.0, 'car', 1], [49.7, 999, 'bus2', 0]],
-    family: [[27.8, 49.85, 'car', 0]],
-    birgit: [[29.5, 36.8, 'plane', 0], [37.8, 49.2, 'car', 2], [49.9, 999, 'bus2', 1]],
-    edo: [[50.4, 999, 'scooter', 0]],
+    da: [[2.4, 33.4, 'bus', 0], [34.2, 64.0, 'car', 1], [64.7, 999, 'bus2', 0]],
+    family: [[33.2, 64.8, 'car', 0]],
+    birgit: [[37.3, 44.8, 'plane', 0], [45.8, 64.2, 'car', 2], [64.9, 999, 'bus2', 1]],
+    edo: [[66.8, 999, 'scooter', 0]],
   };
 
   // ---------------------------------------------------------------------------
@@ -364,22 +375,24 @@
   const CAM = [
     [0, { ll: [44.72, 8.62], z: 1 }],
     [3, { at: 'nice', z: 5 }],
-    [6.5, { follow: 'bus', z: 4.2 }],
-    [9, { follow: 'bus', z: 3 }],
-    [16, { follow: 'bus', z: 2.5 }],
-    [20.5, { follow: 'bus', z: 3.4 }],
-    [24, { follow: 'bus', z: 4 }],
-    [26.5, { at: 'mariano', z: 5 }],
-    [30, { ll: [45.7, 9.15], z: 2.9 }],
-    [33, { ll: [45.68, 9.05], z: 2.8 }],
-    [35, { at: 'malpensa', z: 4.4 }],
-    [38.5, { at: 'malpensa', z: 4.4 }],
-    [40.2, { follow: 'car', z: 4.2 }],
-    [44.5, { follow: 'car', z: 4.2 }],
-    [46, { at: 'mariano', z: 5 }],
-    [49.5, { ll: [45.72, 9.5], z: 2.9 }],
-    [54, { ll: [45.715, 9.62], z: 3.8 }],
-    [57.5, { ll: [45.705, 9.68], z: 5.4 }],
+    [7.2, { follow: 'bus', z: 4.2 }],
+    [9.7, { follow: 'bus', z: 3 }],
+    [17, { follow: 'bus', z: 2.5 }],
+    [22.7, { follow: 'bus', z: 3.4 }],
+    [26.4, { follow: 'bus', z: 4 }],
+    [28.8, { at: 'mariano', z: 5 }],
+    [34.4, { at: 'mariano', z: 5 }],
+    [37.8, { ll: [45.7, 9.15], z: 2.9 }],
+    [40.8, { ll: [45.68, 9.05], z: 2.8 }],
+    [43.3, { at: 'malpensa', z: 4.4 }],
+    [47.5, { at: 'malpensa', z: 4.4 }],
+    [49, { follow: 'car', z: 4.2 }],
+    [54, { follow: 'car', z: 4.2 }],
+    [55.5, { at: 'mariano', z: 5 }],
+    [64.2, { at: 'mariano', z: 5 }],
+    [66.8, { ll: [45.72, 9.5], z: 2.9 }],
+    [71, { ll: [45.715, 9.62], z: 3.8 }],
+    [74, { ll: [45.705, 9.68], z: 5.4 }],
     [END, { ll: [45.705, 9.68], z: 5.8 }],
   ];
   const camTarget = (k, t) => (k.follow ? actorPos(ACTORS[k.follow], t) : k.at ? P[k.at] : proj(k.ll));
@@ -586,10 +599,12 @@
     stage.setAttribute('viewBox', `0 0 ${vw} ${vh}`);
     for (const r of Object.values(washes)) { r.setAttribute('width', vw); r.setAttribute('height', vh); }
     const narrow = vw < 680;
-    const usableH = vh - (narrow ? 250 : 120);
+    const usableH = vh - (narrow ? 200 : 150);
     base = Math.min(vw / (ROUTE_BOX.w * 1.15), usableH / (ROUTE_BOX.h * 1.05));
-    fx = narrow || vw < 1000 ? vw / 2 : vw * 0.56;
-    fy = narrow ? 70 + usableH / 2 : vh * 0.45;
+    fx = vw / 2;
+    fy = vh * (narrow ? 0.4 : 0.42);
+    controlsH = $('.controls').offsetHeight || 80;
+    lastCap = -2; // re-measure the caption card
     as = clamp(Math.min(vw, vh) / 640, 0.7, 1.35);
     conf.resize();
     buildSky();
@@ -598,7 +613,10 @@
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
-  let lastChapter = -1, lastKm = -1;
+  let lastChapter = -1, lastKm = -1, lastCap = -2;
+  const capEl = $('#caption');
+  const capBox = { w: 300, h: 120 };
+  let controlsH = 80;
   const vstate = {};
 
   function render(t, w) {
@@ -621,7 +639,7 @@
       tr.el.setAttribute('d', partialD(trip.r, f));
       tr.el.setAttribute('stroke-width', tr.w / S);
       if (tr.dash) tr.el.setAttribute('stroke-dasharray', tr.dash.map((v) => v / S).join(' '));
-      tr.el.style.opacity = tr.actor === 'plane' ? clamp((38.6 - t) / 0.5) : '';
+      tr.el.style.opacity = tr.actor === 'plane' ? clamp((T.planeGone - t) / 0.5) : '';
     }
 
     // labels
@@ -649,10 +667,10 @@
     }
 
     // sky and washes
-    const night = pw([[27, 0], [30, 0.5], [39, 0.55], [41.5, 0.74], [44.5, 0.74], [47.5, 0]], t);
+    const night = pw([[33, 0], [36, 0.5], [48, 0.55], [51, 0.74], [55, 0.74], [58.5, 0]], t);
     washes.night.style.opacity = night;
-    washes.dusk.style.opacity = pw([[26, 0], [28.5, 0.3], [31.5, 0]], t);
-    washes.dawn.style.opacity = pw([[45, 0], [47, 0.28], [50.5, 0]], t);
+    washes.dusk.style.opacity = pw([[32, 0], [34.5, 0.3], [37.5, 0]], t);
+    washes.dawn.style.opacity = pw([[56, 0], [58, 0.28], [61.5, 0]], t);
     const starO = clamp((night - 0.4) / 0.2);
     const stars = skyG.querySelector('#stars');
     stars.style.opacity = starO;
@@ -662,7 +680,7 @@
     const moonO = clamp((night - 0.3) / 0.15);
     moon.setAttribute('transform', `translate(${skyX} ${skyY + (1 - moonO) * 40})`);
     moon.style.opacity = moonO;
-    const sunO = pw([[45.3, 0], [46.5, 1], [50, 1], [51.5, 0]], t);
+    const sunO = pw([[56.3, 0], [57.5, 1], [62, 1], [63.5, 0]], t);
     const sun = skyG.querySelector('#sun');
     sun.setAttribute('transform', `translate(${skyX} ${skyY + (1 - sunO) * 60}) scale(${0.6 + 0.4 * sunO})`);
     sun.style.opacity = sunO;
@@ -746,14 +764,14 @@
       if (calm) ang = 0;
       else if (hp.hop) ang = Math.sin(w * 20) * 18;
       else ang = Math.sin(w * (hp.speed > 0.6 ? 9 : 2.4) + pp.phase) * (hp.speed > 0.6 ? 7 + Math.min(hp.speed, 40) * 0.25 : 4);
-      if (id === 'da' && t > 40.6 && t < 45.2) ang = 28 + (calm ? 0 : Math.sin(w * 1.5) * 4);
+      if (id === 'da' && t > T.sleep[0] && t < T.sleep[1]) ang = 28 + (calm ? 0 : Math.sin(w * 1.5) * 4);
       pp.g.setAttribute('transform', `translate(${hp.x.toFixed(1)} ${hp.y.toFixed(1)}) scale(${hp.s.toFixed(3)})`);
       pp.bob.setAttribute('transform', `rotate(${ang.toFixed(2)} 0 18)`);
       if (id === 'da') {
-        const hatS = easeOutBack(clamp((t - 46) / 0.5));
-        pp.hat.style.display = t > 46 ? '' : 'none';
+        const hatS = easeOutBack(clamp((t - T.hat) / 0.5));
+        pp.hat.style.display = t > T.hat ? '' : 'none';
         pp.hat.setAttribute('transform', `translate(0 -14) scale(${Math.max(0.001, hatS)}) translate(0 10)`);
-        hp.top = t > 46 ? 48 : 22;
+        hp.top = t > T.hat ? 48 : 22;
       } else hp.top = 22;
     }
 
@@ -768,11 +786,39 @@
       b.el.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) translate(-50%, -100%) scale(${Math.max(0.01, k).toFixed(3)})`;
     }
 
-    // caption + stamp
+    // chapter (timeline ticks + date stamp)
     let ci = 0;
     while (ci < CHAPTERS.length - 1 && t >= CHAPTERS[ci + 1].t) ci++;
     if (ci !== lastChapter) setChapter(ci, lastChapter);
     lastChapter = ci;
+
+    // caption card, popping up next to the vehicle it talks about
+    const capI = CHAPTERS.findIndex((c) => t >= c.cap[0] && t <= c.cap[1]);
+    if (capI !== lastCap) {
+      lastCap = capI;
+      if (capI >= 0) {
+        $('#cap-title').textContent = CHAPTERS[capI].title;
+        $('#cap-text').textContent = CHAPTERS[capI].text;
+        capBox.w = capEl.offsetWidth;
+        capBox.h = capEl.offsetHeight;
+      }
+    }
+    if (capI < 0) capEl.style.visibility = 'hidden';
+    else {
+      const c = CHAPTERS[capI];
+      const st = vstate[c.near];
+      const ax = st && st.visible ? st.sx : fx, ay = st && st.visible ? st.sy : fy;
+      const { w: cw, h: ch } = capBox;
+      const left = clamp(ax - cw / 2, 16, Math.max(16, vw - cw - 16));
+      let top = ay + 26 * as;
+      const above = top + ch > vh - controlsH - 12;
+      if (above) top = Math.max(64, ay - 100 * as - ch);
+      const k = Math.min(easeOutBack(clamp((t - c.cap[0]) / 0.35)), clamp((c.cap[1] - t) / 0.25));
+      capEl.classList.toggle('is-above', above);
+      capEl.style.setProperty('--ax', `${clamp(ax - left, 26, cw - 26).toFixed(0)}px`);
+      capEl.style.visibility = 'visible';
+      capEl.style.transform = `translate(${left.toFixed(1)}px, ${top.toFixed(1)}px) scale(${Math.max(0.01, k).toFixed(3)})`;
+    }
 
     // odometer
     const car = ACTORS.car.trips;
@@ -793,15 +839,11 @@
 
   function setChapter(i, prev) {
     const c = CHAPTERS[i];
-    const cap = $('#caption');
-    $('#cap-title').textContent = c.title;
-    $('#cap-text').textContent = c.text;
     const stamp = $('#stamp');
     const stampChanged = $('#stamp-part').textContent !== c.part;
     $('#stamp-day').textContent = c.day;
     $('#stamp-part').textContent = c.part;
     if (prev !== -1 && !reduceMotion.matches) {
-      cap.classList.remove('swap'); void cap.offsetWidth; cap.classList.add('swap');
       if (stampChanged) { stamp.classList.remove('thump'); void stamp.offsetWidth; stamp.classList.add('thump'); }
     }
     ticks.forEach((tk, k) => tk.classList.toggle('on', k <= i));
@@ -851,8 +893,8 @@
 
   // one-shot moments, fired only while playing forward
   const EVENTS = [
-    [46.1, () => { const hp = PEOPLE.da; const m = /translate\(([\d.-]+) ([\d.-]+)\)/.exec(hp.g.getAttribute('transform') || ''); if (m) conf.burst(+m[1], +m[2] - 30, 70, 0.8); }],
-    [57.4, () => { conf.burst(vw * 0.2, vh * 0.75, 90, 0.7); conf.burst(vw * 0.8, vh * 0.75, 90, 0.7); }],
+    [T.hat + 0.1, () => { const hp = PEOPLE.da; const m = /translate\(([\d.-]+) ([\d.-]+)\)/.exec(hp.g.getAttribute('transform') || ''); if (m) conf.burst(+m[1], +m[2] - 30, 70, 0.8); }],
+    [T.reunion, () => { conf.burst(vw * 0.2, vh * 0.75, 90, 0.7); conf.burst(vw * 0.8, vh * 0.75, 90, 0.7); }],
   ];
 
   // ---------------------------------------------------------------------------
@@ -956,6 +998,21 @@
   // Boot
   // ---------------------------------------------------------------------------
   $('#sig-name').textContent = CONFIG.from;
+  scrub.max = END;
+
+  // Editing aid: warn in the console if two texts overlap or one is too short to read.
+  {
+    const slots = [
+      ...CHAPTERS.map((c) => ({ a: c.cap[0], b: c.cap[1], what: c.title, len: c.title.length + c.text.length })),
+      ...BUBBLES.map(([a, b, , text]) => ({ a, b, what: text, len: text.length })),
+    ].sort((x, y) => x.a - y.a);
+    slots.forEach((x, i) => {
+      const next = slots[i + 1];
+      if (next && next.a < x.b) console.warn(`Texts overlap: "${x.what}" and "${next.what}"`);
+      const need = (1 + x.len / 15) * PLAYBACK_SPEED; // ~15 characters per second
+      if (x.b - x.a < need - 0.3) console.warn(`"${x.what}" is on screen ${((x.b - x.a) / PLAYBACK_SPEED).toFixed(1)} s, needs about ${(need / PLAYBACK_SPEED).toFixed(1)} s`);
+    });
+  }
   buildMap();
   buildTrails();
   buildLabels();
