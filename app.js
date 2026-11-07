@@ -28,44 +28,48 @@
     km: { bus: 365, airport: 80, bergamo: 55 },
   };
 
-  const END = 81;
-  // Timeline seconds per real second. Lower = slower; 0.42 makes the whole story about 3 min 15 s.
+  const END = 100;
+  // Timeline seconds per real second. Lower = slower; 0.55 makes the whole story about 3 min.
   const PLAYBACK_SPEED = 0.55;
 
   // One text on screen at a time. Each chapter starts at `t` (timeline ticks and
   // the date stamp follow it) and shows its caption card during `cap`, next to the
   // vehicle named in `near`. Speech bubbles get their own slots between captions.
-  const VEN = 'venerdì 6 nov', SAB = 'sabato 7 nov';
+  const GIO = 'giovedì 5 nov', VEN = 'venerdì 6 nov', SAB = 'sabato 7 nov';
   const CHAPTERS = [
-    { t: 0, cap: [2.8, 5.7], near: 'bus', day: VEN, part: 'pomeriggio', title: 'Nizza',
+    { t: 0, cap: [2.8, 5.7], near: 'bus', day: GIO, part: 'pomeriggio', title: 'Nizza',
       text: 'Da sale sul bus con uno zaino e una quantità sospetta di snack.' },
-    { t: 7.2, cap: [7.4, 10.4], near: 'bus', day: VEN, part: 'pomeriggio', title: 'Monaco, a passo di bus',
+    { t: 7.2, cap: [7.4, 10.4], near: 'bus', day: GIO, part: 'pomeriggio', title: 'Monaco, a passo di bus',
       text: 'Si sfila davanti agli yacht. Nessuno lo invita a bordo. Peggio per loro.' },
-    { t: 10.5, cap: [10.6, 13.1], near: 'bus', day: VEN, part: 'pomeriggio', title: 'Ventimiglia',
-      text: 'Benvenuto in Italia: fuori i croissant, dentro la focaccia.' },
-    { t: 14.6, cap: [14.7, 17.6], near: 'bus', day: VEN, part: 'pomeriggio', title: 'Genova',
+    { t: 10.5, cap: [10.6, 13.1], near: 'bus', day: GIO, part: 'pomeriggio', title: 'Ventimiglia',
+      text: 'Bentornato in Italia, dove il croissant torna a chiamarsi cornetto.' },
+    { t: 14.6, cap: [14.7, 17.6], near: 'bus', day: GIO, part: 'pomeriggio', title: 'Genova',
       text: 'Ciao mare: il bus si arrampica sugli Appennini, un tornante alla volta.' },
-    { t: 19.1, cap: [19.2, 22.7], near: 'bus', day: VEN, part: 'pomeriggio', title: 'Pianura Padana',
+    { t: 19.1, cap: [19.2, 22.7], near: 'bus', day: GIO, part: 'pomeriggio', title: 'Pianura Padana',
       text: "All'Autogrill Da indaga ogni panino come un detective. Verdetto vegetariano: pizzetta." },
-    { t: 22.8, cap: [22.9, 26.0], near: 'bus', day: VEN, part: 'tardo pomeriggio', title: 'Tangenziale di Milano',
+    { t: 22.8, cap: [22.9, 26.0], near: 'bus', day: GIO, part: 'tardo pomeriggio', title: 'Tangenziale di Milano',
       text: "Tre chilometri in quaranta minuti. Da compone un'opera lirica sul traffico." },
-    { t: 28.8, cap: [30.4, 33.9], near: 'bus', day: VEN, part: 'tardo pomeriggio', title: 'Mariano Comense',
+    { t: 28.8, cap: [31.2, 34.7], near: 'sofa', day: GIO, part: 'sera', title: 'Mariano Comense',
       text: 'Casa! La famiglia ha cucinato per tutta la provincia di Como. Rigorosamente vegetariano.' },
-    { t: 34.2, cap: [34.3, 37.6], near: 'car', day: VEN, part: 'sera', title: 'Turno serale',
-      text: 'Stasera Birgit atterra a Malpensa da Vienna. Il taxi di famiglia scalda il motore.' },
-    { t: 39.1, cap: [39.2, 41.9], near: 'car', day: VEN, part: 'sera', title: 'Gara verso Malpensa',
+    { t: 38.6, cap: [38.7, 42.3], near: 'sofa', day: VEN, part: 'a casa', title: 'Smart working a Mariano',
+      text: 'Da lavora per Southwind dal divano di casa. Il pallino su Discord resta verde anche durante il pisolino.' },
+    { t: 45.3, cap: [45.4, 49.0], near: 'car', day: VEN, part: 'prima di cena', title: 'Missione Malpensa',
+      text: 'Prima di cena Birgit atterra da Vienna. Il taxi di famiglia scalda il motore.' },
+    { t: 50.5, cap: [50.6, 53.4], near: 'car', day: VEN, part: 'prima di cena', title: 'Gara verso Malpensa',
       text: "Auto contro aereo. Nessuno ha detto all'aereo che era una gara." },
-    { t: 44.3, cap: [47.3, 50.4], near: 'car', day: VEN, part: 'sera', title: 'Birgit è atterrata',
+    { t: 55.8, cap: [58.7, 61.8], near: 'car', day: VEN, part: 'prima di cena', title: 'Birgit è atterrata',
       text: 'Da fa il disinvolto. Ha controllato il volo ogni quattro minuti da pranzo.' },
-    { t: 50.5, cap: [50.6, 53.8], near: 'car', day: VEN, part: 'notte', title: 'Ritorno a Mariano',
-      text: 'Si torna a casa sotto le stelle. Qualcuno si addormenta dietro. (Era Da.)' },
-    { t: 58.0, cap: [58.2, 61.4], near: 'car', day: SAB, part: '27 anni!', title: 'Buon compleanno!',
+    { t: 61.9, cap: [62.0, 65.2], near: 'car', day: VEN, part: 'ora di cena', title: 'Di corsa a casa',
+      text: 'La cena è in tavola e in famiglia non si aspetta nessuno. Nemmeno chi arriva da Vienna.' },
+    { t: 67.3, cap: [67.5, 70.9], near: 'table', day: VEN, part: 'cena', title: 'Tutti a tavola',
+      text: "Cena tutti insieme. Da racconta l'odissea in bus per la terza volta, sempre più epica." },
+    { t: 76.8, cap: [77.0, 80.2], near: 'table', day: SAB, part: '27 anni!', title: 'Buon compleanno!',
       text: 'Da si sveglia con 27 anni. Nella notte gli è comparso un cappellino da festa.' },
-    { t: 64.3, cap: [64.4, 67.2], near: 'bus2', day: SAB, part: '27 anni!', title: 'Destinazione Bergamo',
+    { t: 83.1, cap: [83.2, 86.0], near: 'bus2', day: SAB, part: '27 anni!', title: 'Destinazione Bergamo',
       text: 'Il festeggiato e Birgit prendono il bus. Prossima fermata: Bergamo.' },
-    { t: 67.3, cap: [67.4, 72.7], near: 'scooter', day: SAB, part: '27 anni!', title: 'Intanto, in Val Seriana',
+    { t: 86.1, cap: [86.2, 91.5], near: 'scooter', day: SAB, part: '27 anni!', title: 'Intanto, in Val Seriana',
       text: "Il CEO scende da Fiobbio in scooter. Lo chiama «offsite strategico», lo mette in nota spese e ha già pronta una slide sul compleanno di Da." },
-    { t: 74.2, cap: [74.3, 77.7], near: 'bus2', day: SAB, part: '27 anni!', title: 'Bergamo',
+    { t: 93.0, cap: [93.1, 96.5], near: 'bus2', day: SAB, part: '27 anni!', title: 'Bergamo',
       text: 'Tutti insieme per il grande giorno. Qualcuno nomina la polenta entro trenta secondi.' },
   ];
 
@@ -76,36 +80,40 @@
     [17.8, 19.0, 'da', 'Quanti tornanti…'],
     [26.2, 27.4, 'da', 'Dai, muoviti…'],
     [29.0, 30.2, 'da', 'Sono a casa!'],
-    [37.8, 39.0, 'family', 'Andiamo!'],
-    [44.5, 45.7, 'birgit', 'Servus!'],
-    [45.9, 47.1, 'da', 'Finalmente!'],
-    [54.0, 55.6, 'da', 'zzz…'],
-    [61.6, 63.0, 'da', 'Chi mi ha messo questo cappello?'],
-    [63.2, 64.2, 'family', 'Fate i bravi!'],
-    [72.9, 74.1, 'edo', 'Arrivo, ho una call alle tre!'],
-    [77.9, 79.1, 'edo', 'Auguri, Da!'],
-    [79.3, 80.6, 'da', 'Grazie!'],
+    [42.5, 43.9, 'family', 'Mangia, che sei sciupato!'],
+    [49.2, 50.4, 'family', 'Andiamo!'],
+    [55.9, 57.1, 'birgit', 'Servus!'],
+    [57.3, 58.5, 'da', 'Finalmente!'],
+    [71.1, 72.3, 'family', "Ancora un po'?"],
+    [72.5, 73.9, 'da', 'zzz…'],
+    [80.4, 81.8, 'da', 'Chi mi ha messo questo cappello?'],
+    [82.0, 83.0, 'family', 'Fate i bravi!'],
+    [91.7, 92.9, 'edo', 'Arrivo, ho una call alle tre!'],
+    [96.7, 97.9, 'edo', 'Auguri, Da!'],
+    [98.1, 99.4, 'da', 'Grazie!'],
   ];
 
   // Blobatar expressions over time: [from, pose]. Poses come from blobatar/expression.
   const MOODS = {
     da: [[0, 'happy'], [7.4, 'smug'], [10.6, 'happy'], [14.7, 'idle'], [17.6, 'sick'], [19.2, 'thinking'],
-      [22.9, 'mad'], [28.8, 'happy'], [34.3, 'idle'], [39.2, 'thinking'], [43, 'surprised'], [44.6, 'love'],
-      [51, 'sleepy'], [58, 'surprised'], [61.5, 'unsure'], [63, 'happy'], [65.2, 'love'], [68, 'idle'],
-      [73.5, 'happy']],
-    birgit: [[0, 'idle'], [39.2, 'smug'], [43, 'idle'], [44.4, 'happy'], [46, 'love'], [51.2, 'sleepy'],
-      [58, 'happy'], [65.2, 'love'], [68, 'wink'], [70, 'idle'], [73.5, 'happy']],
-    family: [[0, 'happy'], [37.8, 'mad'], [41.5, 'surprised'], [44.4, 'happy'], [48.5, 'idle'], [58, 'love'],
-      [62.9, 'sad']],
-    edo: [[0, 'idle'], [67.4, 'smug'], [72.8, 'happy'], [79.2, 'wink']],
+      [22.9, 'mad'], [28.8, 'happy'], [35, 'sleepy'], [38.5, 'happy'], [39, 'smug'], [42.4, 'shy'],
+      [44.4, 'idle'], [50.6, 'thinking'], [54.5, 'surprised'], [56, 'love'], [62, 'happy'], [72.3, 'sleepy'],
+      [76.8, 'surprised'], [80.3, 'unsure'], [81.9, 'happy'], [84, 'love'], [87, 'idle'], [92.3, 'happy']],
+    birgit: [[0, 'idle'], [50.6, 'smug'], [54.5, 'idle'], [55.8, 'happy'], [57.4, 'love'], [62, 'happy'],
+      [67.5, 'love'], [71, 'happy'], [72.6, 'sleepy'], [76.8, 'happy'], [84, 'love'], [87, 'wink'],
+      [89, 'idle'], [92.3, 'happy']],
+    family: [[0, 'happy'], [35, 'sleepy'], [38.5, 'happy'], [42.4, 'smug'], [44, 'idle'], [49.2, 'mad'],
+      [53, 'surprised'], [55.8, 'happy'], [59.9, 'idle'], [67.5, 'happy'], [71, 'love'], [72.6, 'sleepy'],
+      [76.8, 'love'], [81.9, 'sad']],
+    edo: [[0, 'idle'], [86.2, 'smug'], [91.6, 'happy'], [98, 'wink']],
   };
 
   // Moments that are not texts or moods.
   const T = {
-    hat: 58.4,          // party hat appears on Da
-    sleep: [51, 56],    // Da's head lolls on the night drive
-    reunion: 74.3,      // confetti in Bergamo
-    planeGone: 47,      // contrail fades out
+    hat: 77.2,          // party hat appears on Da
+    sleep: [72.3, 76],  // Da falls asleep at the dinner table
+    reunion: 93.1,      // confetti in Bergamo
+    planeGone: 58.4,    // contrail fades out
   };
 
   // ---------------------------------------------------------------------------
@@ -210,6 +218,7 @@
     plane: [[46.15, 10.7], [45.95, 10.1], [45.78, 9.5], [45.67, 8.95], [45.625, 8.69]],
   };
   ROUTE_LL.back = ROUTE_LL.malpensa.slice().reverse();
+  ROUTE_LL.home = [[45.6977, 9.1813], [45.6977, 9.1816]]; // the sofa and the dinner table stay put
 
   const catmull = (p0, p1, p2, p3, u) => {
     const u2 = u * u, u3 = u2 * u;
@@ -255,21 +264,23 @@
   // Cast: vehicles with timed trips
   // ---------------------------------------------------------------------------
   const ACTORS = {
-    bus: { kind: 'bus', show: [2.4, 34.4], trips: [
+    bus: { kind: 'bus', show: [2.4, 31.2], trips: [
       { route: 'bus', keys: [[7.2, 0], [11.5, 'w4'], [17, 'w12'], [22.7, 'w18'], [26.4, 'w19'], [28.8, 1]] },
     ] },
-    car: { kind: 'car', show: [33.2, 64.8], trips: [
-      { route: 'malpensa', keys: [[37.8, 0], [43.3, 1]] },
-      { route: 'back', keys: [[48.5, 0], [54.5, 1]] },
+    sofa: { kind: 'sofa', show: [29.8, 45.4], trips: [{ route: 'home', keys: [[0, 0], [1, 0]] }] },
+    table: { kind: 'table', show: [65.8, 83.8], trips: [{ route: 'home', keys: [[0, 0], [1, 0]] }] },
+    car: { kind: 'car', show: [44, 67.4], trips: [
+      { route: 'malpensa', keys: [[49.2, 0], [54.7, 1]] },
+      { route: 'back', keys: [[59.9, 0], [65.9, 1]] },
     ] },
-    plane: { kind: 'plane', show: [37.3, 47], trips: [
-      { route: 'plane', keys: [[37.3, 0], [44.3, 1]] },
+    plane: { kind: 'plane', show: [48.7, 58.4], trips: [
+      { route: 'plane', keys: [[48.7, 0], [55.7, 1]] },
     ] },
-    scooter: { kind: 'scooter', show: [66.8, 999], trips: [
-      { route: 'edo', keys: [[67.4, 0], [73.5, 1]] },
+    scooter: { kind: 'scooter', show: [85.6, 999], trips: [
+      { route: 'edo', keys: [[86.2, 0], [92.3, 1]] },
     ] },
-    bus2: { kind: 'bus', show: [64.1, 999], trips: [
-      { route: 'bergamo', keys: [[65, 0], [73.5, 1]] },
+    bus2: { kind: 'bus', show: [82.9, 999], trips: [
+      { route: 'bergamo', keys: [[83.8, 0], [92.3, 1]] },
     ] },
   };
   for (const a of Object.values(ACTORS)) {
@@ -359,14 +370,36 @@
         <circle cx="31" cy="-30" r="3" fill="#FFE800" stroke="#3D5588" stroke-width="1.5"/>
         ${WHEEL(-20, -9, 8.5)}${WHEEL(22, -9, 8.5)}`,
     },
+    sofa: {
+      seats: [[-24, -48], [4, -52], [30, -48]], headR: 15,
+      svg: `
+        <rect x="-50" y="-44" width="100" height="26" rx="9" fill="#3D5588" transform="translate(3 3)"/>
+        <rect x="-50" y="-44" width="100" height="26" rx="9" fill="#FF48B0" stroke="#3D5588" stroke-width="2"/>
+        <rect x="-52" y="-26" width="104" height="16" rx="6" fill="#0078BF" stroke="#3D5588" stroke-width="2"/>
+        <rect x="-60" y="-36" width="15" height="28" rx="6" fill="#0078BF" stroke="#3D5588" stroke-width="2"/>
+        <rect x="45" y="-36" width="15" height="28" rx="6" fill="#0078BF" stroke="#3D5588" stroke-width="2"/>
+        <rect x="-48" y="-9" width="6" height="9" rx="2" fill="#3D5588"/>
+        <rect x="42" y="-9" width="6" height="9" rx="2" fill="#3D5588"/>`,
+    },
+    table: {
+      seats: [[-32, -50], [2, -54], [36, -50]], headR: 15,
+      svg: `
+        <rect x="-46" y="-24" width="6" height="24" rx="2" fill="#3D5588"/>
+        <rect x="40" y="-24" width="6" height="24" rx="2" fill="#3D5588"/>
+        <path d="M-58,-32H58V-18Q51,-12 44,-18Q37,-12 30,-18Q23,-12 16,-18Q9,-12 2,-18Q-5,-12 -12,-18Q-19,-12 -26,-18Q-33,-12 -40,-18Q-47,-12 -58,-18Z" fill="#FFFDF6" stroke="#3D5588" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M-46,-31V-19M-30,-31V-19M-14,-31V-19M2,-31V-19M18,-31V-19M34,-31V-19M50,-31V-19" stroke="#FF48B0" stroke-width="3.5" opacity=".55"/>
+        <ellipse cx="-32" cy="-33" rx="10" ry="3" fill="#FFFDF6" stroke="#3D5588" stroke-width="1.6"/>
+        <ellipse cx="36" cy="-33" rx="10" ry="3" fill="#FFFDF6" stroke="#3D5588" stroke-width="1.6"/>
+        <path d="M-12,-33h22l-3,-7h-16z" fill="#FFE800" stroke="#3D5588" stroke-width="1.6" stroke-linejoin="round"/>`,
+    },
   };
 
   // Who rides what: [from, to, vehicle, seat]. Gaps between rides become hops.
   const RIDES = {
-    da: [[2.4, 33.4, 'bus', 0], [34.2, 64.0, 'car', 1], [64.7, 999, 'bus2', 0]],
-    family: [[33.2, 64.8, 'car', 0]],
-    birgit: [[37.3, 44.8, 'plane', 0], [45.8, 64.2, 'car', 2], [64.9, 999, 'bus2', 1]],
-    edo: [[66.8, 999, 'scooter', 0]],
+    da: [[2.4, 30.2, 'bus', 0], [31.0, 44.4, 'sofa', 1], [45.2, 66.2, 'car', 1], [67.0, 82.8, 'table', 1], [83.5, 999, 'bus2', 0]],
+    family: [[29.8, 44.2, 'sofa', 0], [45.0, 66.0, 'car', 0], [66.8, 83.8, 'table', 0]],
+    birgit: [[48.7, 56.2, 'plane', 0], [57.2, 66.4, 'car', 2], [67.2, 83.0, 'table', 2], [83.7, 999, 'bus2', 1]],
+    edo: [[85.6, 999, 'scooter', 0]],
   };
 
   // ---------------------------------------------------------------------------
@@ -381,18 +414,18 @@
     [22.7, { follow: 'bus', z: 3.4 }],
     [26.4, { follow: 'bus', z: 4 }],
     [28.8, { at: 'mariano', z: 5 }],
-    [34.4, { at: 'mariano', z: 5 }],
-    [37.8, { ll: [45.7, 9.15], z: 2.9 }],
-    [40.8, { ll: [45.68, 9.05], z: 2.8 }],
-    [43.3, { at: 'malpensa', z: 4.4 }],
-    [47.5, { at: 'malpensa', z: 4.4 }],
-    [49, { follow: 'car', z: 4.2 }],
-    [54, { follow: 'car', z: 4.2 }],
-    [55.5, { at: 'mariano', z: 5 }],
-    [64.2, { at: 'mariano', z: 5 }],
-    [66.8, { ll: [45.72, 9.5], z: 2.9 }],
-    [71, { ll: [45.715, 9.62], z: 3.8 }],
-    [74, { ll: [45.705, 9.68], z: 5.4 }],
+    [47.6, { at: 'mariano', z: 5 }],
+    [51.2, { ll: [45.7, 9.15], z: 2.9 }],
+    [53.2, { ll: [45.68, 9.05], z: 2.8 }],
+    [54.7, { at: 'malpensa', z: 4.4 }],
+    [59, { at: 'malpensa', z: 4.4 }],
+    [60.4, { follow: 'car', z: 4.2 }],
+    [65.4, { follow: 'car', z: 4.2 }],
+    [66.8, { at: 'mariano', z: 5 }],
+    [83.6, { at: 'mariano', z: 5 }],
+    [86.2, { ll: [45.72, 9.5], z: 2.9 }],
+    [90.4, { ll: [45.715, 9.62], z: 3.8 }],
+    [93.4, { ll: [45.705, 9.68], z: 5.4 }],
     [END, { ll: [45.705, 9.68], z: 5.8 }],
   ];
   const camTarget = (k, t) => (k.follow ? actorPos(ACTORS[k.follow], t) : k.at ? P[k.at] : proj(k.ll));
@@ -667,10 +700,10 @@
     }
 
     // sky and washes
-    const night = pw([[33, 0], [36, 0.5], [48, 0.55], [51, 0.74], [55, 0.74], [58.5, 0]], t);
+    const night = pw([[33.5, 0], [35.5, 0.74], [37.2, 0.74], [39, 0], [44, 0], [47, 0.5], [59.5, 0.55], [62.5, 0.74], [75, 0.74], [77.8, 0]], t);
     washes.night.style.opacity = night;
-    washes.dusk.style.opacity = pw([[32, 0], [34.5, 0.3], [37.5, 0]], t);
-    washes.dawn.style.opacity = pw([[56, 0], [58, 0.28], [61.5, 0]], t);
+    washes.dusk.style.opacity = pw([[33, 0], [34.2, 0.3], [35.8, 0], [43.5, 0], [45.8, 0.3], [48.8, 0]], t);
+    washes.dawn.style.opacity = pw([[37, 0], [38.5, 0.28], [41, 0], [75.5, 0], [77.3, 0.28], [80.8, 0]], t);
     const starO = clamp((night - 0.4) / 0.2);
     const stars = skyG.querySelector('#stars');
     stars.style.opacity = starO;
@@ -680,7 +713,7 @@
     const moonO = clamp((night - 0.3) / 0.15);
     moon.setAttribute('transform', `translate(${skyX} ${skyY + (1 - moonO) * 40})`);
     moon.style.opacity = moonO;
-    const sunO = pw([[56.3, 0], [57.5, 1], [62, 1], [63.5, 0]], t);
+    const sunO = pw([[37.3, 0], [38.4, 1], [42, 1], [43.5, 0], [75.8, 0], [77, 1], [81.3, 1], [82.8, 0]], t);
     const sun = skyG.querySelector('#sun');
     sun.setAttribute('transform', `translate(${skyX} ${skyY + (1 - sunO) * 60}) scale(${0.6 + 0.4 * sunO})`);
     sun.style.opacity = sunO;

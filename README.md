@@ -2,7 +2,7 @@
 
 # L'Odissea di Da
 
-A goofy animated map (in Italian) for Da's 27th birthday, 7 November 2026. Da takes the bus from Nizza to Mariano Comense, the family taxi races Birgit's plane from Vienna to Malpensa, and the next day Da and Birgit take the bus to Bergamo, where Edo arrives from Fiobbio.
+A goofy animated map (in Italian) for Da's 27th birthday, 7 November 2026. On Thursday Da takes the bus from Nizza to Mariano Comense. On Friday he rests at home, then before dinner the family taxi races Birgit's plane from Vienna to Malpensa and everyone eats together. On Saturday Da and Birgit take the bus to Bergamo, where Edo arrives from Fiobbio.
 
 Plain static files with no build step: `index.html`, `style.css`, `app.js`, plus [blobatar](https://blobatar.dev) 2.7.0 (MIT) copied into `vendor/blobatar/` and wrapped as a plain script so it works from `file://`.
 
