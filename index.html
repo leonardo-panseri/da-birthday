@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>L'Odissea di Da</title>
+  <meta name="description" content="L'odissea di compleanno di Da: da Nizza a Mariano Comense, una corsa notturna a Malpensa e la festa a Bergamo.">
+  <meta property="og:title" content="L'Odissea di Da">
+  <meta property="og:description" content="Due bus, un'auto, un aereo da Vienna e uno scooter. Buon compleanno, Da!">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Shrikhand&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="vendor/blobatar/motion.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="is-intro">
+  <svg id="stage" aria-hidden="true">
+    <defs>
+      <pattern id="halftone" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(20)">
+        <rect width="7" height="7" fill="#0078BF"/>
+        <circle cx="3.5" cy="3.5" r="1.3" fill="#2E93D1"/>
+      </pattern>
+    </defs>
+    <g id="map"></g>
+    <rect id="dusk" class="wash" fill="#FF48B0"/>
+    <rect id="dawn" class="wash" fill="#FFE800"/>
+    <rect id="night" class="wash" fill="#3D5588"/>
+    <g id="sky"></g>
+    <g id="labels"></g>
+    <g id="actors"></g>
+    <g id="heads"></g>
+  </svg>
+
+  <div id="bubbles" aria-hidden="true"></div>
+  <canvas id="confetti" aria-hidden="true"></canvas>
+
+  <header class="hud">
+    <p class="brand">L'Odissea di Da</p>
+    <p class="stamp" id="stamp"><small id="stamp-day">venerdì 6 nov</small><strong id="stamp-part">pomeriggio</strong></p>
+  </header>
+
+  <section class="caption" id="caption" aria-live="polite">
+    <h2 id="cap-title">Nizza</h2>
+    <p id="cap-text"></p>
+  </section>
+
+  <nav class="controls" aria-label="Riproduzione">
+    <button class="play" id="play" type="button" aria-label="Riproduci">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path class="i-play" d="M7 4.5v15l13-7.5z"/><g class="i-pause"><rect x="5.5" y="4.5" width="4.5" height="15" rx="1.2"/><rect x="14" y="4.5" width="4.5" height="15" rx="1.2"/></g></svg>
+    </button>
+    <div class="track">
+      <input type="range" id="scrub" min="0" max="61" step="0.01" value="0" aria-label="Linea del tempo del viaggio">
+      <div class="ticks" id="ticks"></div>
+    </div>
+    <p class="odo" aria-label="Chilometri percorsi da Da"><span class="digits" id="km"></span><span class="unit">km</span></p>
+  </nav>
+
+  <section class="intro" id="intro">
+    <h1 class="print" data-text="L'Odissea di Da">L'Odissea di Da</h1>
+    <p>Oggi Davide compie 27 anni. Ecco come è arrivato alla sua festa: da Nizza a Bergamo in circa 36 ore, tra due bus, un'auto, un aereo da Vienna e uno scooter.</p>
+    <button class="btn" id="start" type="button">Inizia il viaggio</button>
+  </section>
+
+  <section class="finale" id="finale" hidden aria-labelledby="finale-title">
+    <div class="ticket">
+      <div class="ticket-main">
+        <h2 id="finale-title" class="print" data-text="Tanti auguri, Da!" tabindex="-1">Tanti auguri, Da!</h2>
+        <p class="msg">Due giorni, due paesi, due bus, un aereo da Vienna e un'auto che ha provato a batterlo in volata: tutto per ritrovarti a Bergamo con le persone che ti vogliono bene. Buon compleanno, e che i 27 siano i migliori finora.</p>
+        <p class="sig">Un abbraccio, <span id="sig-name">Leo</span></p>
+        <dl class="receipt">
+          <div><dt>Nizza → Mariano Comense, in bus</dt><dd>365 km</dd></div>
+          <div><dt>Mariano → Malpensa e ritorno, taxi di famiglia</dt><dd>80 km</dd></div>
+          <div><dt>Mariano → Bergamo, in bus con Birgit</dt><dd>55 km</dd></div>
+          <div><dt>Fidanzate arrivate da Vienna e recuperate a Malpensa</dt><dd>1</dd></div>
+          <div class="total"><dt>Totale dell'odissea</dt><dd>circa 500 km</dd></div>
+        </dl>
+      </div>
+      <div class="ticket-stub">
+        <svg class="cake" id="cake" viewBox="0 0 200 190" role="img" aria-label="Una torta con le candeline a forma di 2 e 7">
+          <ellipse cx="100" cy="174" rx="88" ry="10" fill="#0078BF"/>
+          <rect x="34" y="113" width="140" height="58" rx="10" fill="#3D5588"/>
+          <rect x="30" y="110" width="140" height="58" rx="10" fill="#FF48B0"/>
+          <path d="M30 124q0-14 12-14h116q12 0 12 14v4q-7 10-13 0q-7 13-14 0q-7 11-14 0q-7 13-14 0q-7 10-14 0q-7 13-14 0q-7 11-14 0q-7 13-14 0q-7 10-13 0z" fill="#FFFDF6"/>
+          <rect x="55" y="73" width="96" height="40" rx="9" fill="#3D5588"/>
+          <rect x="52" y="70" width="96" height="40" rx="9" fill="#FFE800"/>
+          <path d="M52 82q0-12 10-12h76q10 0 10 12v2q-6 9-11 0q-6 11-12 0q-6 9-12 0q-6 11-12 0q-6 9-12 0q-6 11-12 0q-6 9-11 0z" fill="#FFFDF6"/>
+          <g fill="#0078BF"><rect x="60" y="140" width="7" height="3" rx="1.5" transform="rotate(30 63 141)"/><rect x="92" y="148" width="7" height="3" rx="1.5" transform="rotate(-20 95 149)"/><rect x="130" y="138" width="7" height="3" rx="1.5" transform="rotate(50 133 139)"/><rect x="150" y="152" width="7" height="3" rx="1.5"/></g>
+          <g fill="#00A95C"><rect x="76" y="152" width="7" height="3" rx="1.5" transform="rotate(-40 79 153)"/><rect x="112" y="142" width="7" height="3" rx="1.5" transform="rotate(15 115 143)"/><rect x="46" y="154" width="7" height="3" rx="1.5" transform="rotate(70 49 155)"/></g>
+          <g class="candles">
+            <g transform="translate(84 0)">
+              <rect x="-1.2" y="22" width="2.4" height="12" fill="#3D5588"/>
+              <text x="0" y="74" text-anchor="middle" font-family="Shrikhand, Georgia, serif" font-size="52" fill="#0078BF" stroke="#3D5588" stroke-width="2.5" paint-order="stroke">2</text>
+              <g transform="translate(0 -16)"><path class="flame" d="M0 22c6 7 7 12 3 16c-2 2-4 2-6 0c-4-4-2-9 3-16z" fill="#FFE800" stroke="#FF48B0" stroke-width="2"/><path class="smoke" d="M0 38c-5-6 5-10 0-16c-4-5 3-9 0-13" fill="none" stroke="#3D5588" stroke-width="2" stroke-linecap="round"/></g>
+            </g>
+            <g transform="translate(118 0)">
+              <rect x="-1.2" y="22" width="2.4" height="12" fill="#3D5588"/>
+              <text x="0" y="74" text-anchor="middle" font-family="Shrikhand, Georgia, serif" font-size="52" fill="#00A95C" stroke="#3D5588" stroke-width="2.5" paint-order="stroke">7</text>
+              <g transform="translate(0 -16)"><path class="flame" d="M0 22c6 7 7 12 3 16c-2 2-4 2-6 0c-4-4-2-9 3-16z" fill="#FFE800" stroke="#FF48B0" stroke-width="2"/><path class="smoke" d="M0 38c-5-6 5-10 0-16c-4-5 3-9 0-13" fill="none" stroke="#3D5588" stroke-width="2" stroke-linecap="round"/></g>
+            </g>
+          </g>
+        </svg>
+        <button class="btn" id="blow" type="button">Spegni le candeline</button>
+        <button class="link" id="replay" type="button">Rivedi da capo</button>
+      </div>
+    </div>
+  </section>
+
+  <script src="vendor/blobatar/blobatar.global.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
